@@ -1,0 +1,88 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--primary-color);
+
+  .card {
+    width: 67.5rem;
+    height: 57rem;
+
+    padding: 4rem 9rem;
+
+    border-radius: 1rem;
+
+    background-color: var(--secondary-color);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+    img {
+      width: 44%;
+    }
+
+    article {
+      width: 100%;
+      height: 9.5rem;
+
+      &:last-child {
+        margin-top: 3rem;
+      }
+
+      label {
+        color: var(--text-secondary);
+
+        font-family: Poppins;
+        font-size: 2rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 100%;
+        text-transform: capitalize;
+      }
+
+      input {
+        width: 100%;
+        height: 6rem;
+        border-radius: 8px;
+        border: 3px solid #E0EFFE;
+        padding: 1.5rem 2rem;
+        color: var(--text-secondary);
+        font-family: Poppins;
+        font-size: 1.75rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 100%;
+        /* 14px */
+      }
+
+      .required_field {
+        border: 3px solid #FF0266;
+      }
+    }
+
+    button {
+      height: 52px;
+
+      padding: 16px;
+
+      background: var(--light-blue);
+      border-radius: 1rem;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-self: stretch;
+      gap: 5px;
+
+      color: var(--secondary-color);
+      font-family: Poppins;
+      font-size: 2rem;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 100%;
+
+      transition: 0.2s;
+
+      &:hover {
+        filter: brightness(0.9)
+      }
+    }
+  }
+}
