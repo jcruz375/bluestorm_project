@@ -15,6 +15,8 @@ const Medications = ({ }) => {
 
   const handleSearchMedication = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
+    setCurrentPage(1)
+    setRowsPerPage(20)
     await getAllMedications({ search: event.target.value })
   }
 
@@ -37,6 +39,7 @@ const Medications = ({ }) => {
     let rowsPerPage = parseInt(event.target.value) || 0;
     setRowsPerPage(rowsPerPage)
     if (rowsPerPage <= 0 || rowsPerPage == null) rowsPerPage = 1;
+    setSearchText('')
     getAllMedications({limit: rowsPerPage})
   }
 
