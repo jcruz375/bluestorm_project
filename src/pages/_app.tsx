@@ -2,12 +2,13 @@ import '../styles/globals.scss'
 import type { AppProps } from 'next/app'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { tokenChecker } from '../util/auth_checker';
 import Splash from '../components/splash_page';
+import { useGlobalBloc } from '../bloc/global_bloc';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { tokenChecker } = useGlobalBloc();
 
   useEffect(() => {
     setIsLoading(true);
@@ -23,7 +24,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   if (isLoading) {
-    // Mostra a página de splash enquanto isLoading é verdadeiro
     return <Splash />;
   }
 
