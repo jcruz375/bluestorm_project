@@ -16,9 +16,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       const tokenIsvalid = await tokenChecker();
       if (!tokenIsvalid && router.pathname !== '/') {
         router.push('/');
+      } else if (tokenIsvalid && router.pathname == '/') {
+        router.push('/medications');
       }
       setIsLoading(false);
-      return tokenIsvalid;
     }
     verifyIsUserAutenticated()
   }, []);
