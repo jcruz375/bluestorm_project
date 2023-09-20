@@ -1,9 +1,9 @@
 export interface ApiResponseData {
-  message: string
+  message: string,
 }
 
 export interface LoginResponseData {
-  token: string;
+  token: string,
 }
 
 export interface MedicationsProps {
@@ -15,4 +15,10 @@ export interface MedicationsProps {
   drug_name: String,
   active_ingredient: String,
   reference_standard: String,
+}
+
+export interface PaginationFunctionProps {
+  isFirstPage?: boolean,
+  isLastPage?: boolean,
+  page?: number,
 }

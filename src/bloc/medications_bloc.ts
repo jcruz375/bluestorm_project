@@ -10,6 +10,8 @@ interface ApiRouteParamethers {
 
 export function useMedicationsBloc() {
   const [medicationsList, setMedicationsList] = useState<MedicationsProps[]>([]);
+  const [lastPage, setLastPage] = useState(0);
+  const [totalMedications, setTotalMedications] = useState(0);
 
   async function getAllMedications({ page = 1, limit = 20, search = '' }: ApiRouteParamethers) {
     const bearer = window.localStorage.getItem('JWT');
@@ -26,6 +28,7 @@ export function useMedicationsBloc() {
       if (response.ok) {
         const responseData = await response.json();
         setMedicationsList(responseData.data)
+        setLastPage(responseData.last_page)
         console.log('Medicações::', responseData);
       } else {
         console.error('Erro ao buscar medicações:', response);
@@ -36,6 +39,8 @@ export function useMedicationsBloc() {
   }
   return {
     getAllMedications,
-    medicationsList
+    medicationsList,
+    lastPage,
+    totalMedications,
   }
 }
