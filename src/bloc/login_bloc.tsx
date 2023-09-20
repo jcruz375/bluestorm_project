@@ -1,12 +1,11 @@
 // FormBloc.ts
 import { useState } from 'react';
 import { apiUrl } from '../util/constants';
-
-interface LoginResponseData {
-  token: string;
-}
+import { LoginResponseData } from '../util/types';
+import { useRouter } from 'next/router';
 
 export function useLoginBloc() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -33,15 +32,21 @@ export function useLoginBloc() {
             'Content-Type': 'application/json',
           },
         });
-  
-        if (response.ok) {
-          const data : LoginResponseData = await response.json()
+
+        const data: LoginResponseData = await response.json()
+
+        if (response.status === 200) {
           console.log('Formulário enviado com sucesso!', data);
+          localStorage.setItem('JWT', JSON.stringify(data));
+          router.push('/medications')
         } else {
-          // Lógica de tratamento de erro
-          console.error('Erro ao enviar o formulário:', response);
+          if (response.status === 400) {
+            alert('Login ou senha inválidos.')
+          }
+          console.error('Erro ao enviar o formulário:', data);
         }
       } catch (error) {
+        alert('Desculpe, parece que houve um erro ao realizar o login')
         console.error('Erro ao enviar o formulário', error);
       }
     } else {

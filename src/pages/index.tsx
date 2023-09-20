@@ -1,9 +1,8 @@
 import type { NextPage } from 'next'
-import bluestomeLogo from '../public/images/logo_preto.svg'
-import styles from '../styles/login.module.scss'
 import Image from 'next/image'
 import { useLoginBloc } from '../bloc/login_bloc'
-import { useState } from 'react'
+import bluestomeLogo from '../public/images/logo_preto.svg'
+import styles from '../styles/login.module.scss'
 
 const LoginPage: NextPage = () => {
   const {
