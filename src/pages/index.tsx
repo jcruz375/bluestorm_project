@@ -47,7 +47,7 @@ const LoginPage: NextPage = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              type="text"
+              type="password"
             />
           </article>
         </div>

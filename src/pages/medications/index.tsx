@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
-import styles from '../styles/medications_page.module.scss'
-import { useMedicationsBloc } from '../bloc/medications_bloc';
-import { PaginationFunctionProps } from '../util/types';
+import styles from '../../styles/medications_page.module.scss'
+import { useMedicationsBloc } from '../../bloc/medications_bloc';
+import { PaginationFunctionProps } from '../../util/types';
+import { useRouter } from 'next/router';
 
 const Medications = ({ }) => {
   const { getAllMedications, medicationsList, lastPage } = useMedicationsBloc()
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(20);
+
+  const router = useRouter();
 
   useEffect(() => {
     getAllMedications({ search: '' })
@@ -36,11 +39,11 @@ const Medications = ({ }) => {
   }
 
   const handleChangeLinesPerPage = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    let rowsPerPage = parseInt(event.target.value) || 0;
-    setRowsPerPage(rowsPerPage)
-    if (rowsPerPage <= 0 || rowsPerPage == null) rowsPerPage = 1;
+    let rowsPerPageInputValue = parseInt(event.target.value) || 0;
+    setRowsPerPage(rowsPerPageInputValue)
+    if (rowsPerPageInputValue <= 0 || rowsPerPageInputValue == null) rowsPerPageInputValue = 1;
     setSearchText('')
-    getAllMedications({limit: rowsPerPage})
+    getAllMedications({limit: rowsPerPageInputValue})
   }
 
   return (
@@ -57,8 +60,10 @@ const Medications = ({ }) => {
         />
       </header>
       <section className={`${styles.add_button_section}`}>
-        <button>
-          + Novo registro
+        <button onClick={() => {
+          router.push('/medications/new')
+        }}>
+          + New register
         </button>
       </section>
       <table className={`${styles.my_table}`}>

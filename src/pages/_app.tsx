@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Splash from '../components/splash_page';
 import { useGlobalBloc } from '../bloc/global_bloc';
+import "react-datepicker/dist/react-datepicker.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [isLoading, setIsLoading] = useState(false);
