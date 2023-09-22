@@ -2,6 +2,7 @@ import { useState } from "react";
 import { apiUrl } from "../util/constants";
 import { ManufacturerProps, MedicationsProps } from "../util/types";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 interface ApiRouteParamethers {
   page?: number;
@@ -24,7 +25,7 @@ export function useMedicationsBloc() {
   const [issuedDate, setIssueDate] = useState(new Date());
   const [formattedIssuedDate, setFormattedIssuedDate] = useState<string | Date>(new Date());
   const [expiresDate, setExpiresDate] = useState(new Date());
-  const [formattedExpiresDate, setFormattedExpiresDate] = useState <string | Date>(new Date());
+  const [formattedExpiresDate, setFormattedExpiresDate] = useState<string | Date>(new Date());
   const [manufacturersByMedication, setManufacturersByMedication] = useState<string[]>([]);
 
   const router = useRouter();
@@ -77,20 +78,20 @@ export function useMedicationsBloc() {
     }
   }
 
-  function handleChangeDate({ isExpiresDate = false, date } : ChangeDateParamethers) {
+  function handleChangeDate({ isExpiresDate = false, date }: ChangeDateParamethers) {
     let oldDate = date
-    
+
     const year = oldDate.getUTCFullYear();
     const month = (oldDate.getUTCMonth() + 1).toString().padStart(2, '0');
     const day = oldDate.getUTCDate().toString().padStart(2, '0');
     const hour = oldDate.getUTCHours().toString().padStart(2, '0');
     const minute = oldDate.getUTCMinutes().toString().padStart(2, '0');
     const seconds = oldDate.getUTCSeconds().toString().padStart(2, '0');
-    
+
     const offsetMinutos = oldDate.getTimezoneOffset();
     const offsetHoras = Math.abs(offsetMinutos / 60).toString().padStart(2, '0');
     const offsetSinal = offsetMinutos > 0 ? '-' : '+';
-    
+
     const formatedDate = `${year}-${month}-${day}T${hour}:${minute}:${seconds}${offsetSinal}${offsetHoras}:00`;
     if (isExpiresDate) {
       setFormattedExpiresDate(formatedDate)
@@ -113,7 +114,7 @@ export function useMedicationsBloc() {
     ])
   }
 
-  async function handleSaveNewMedication() {    
+  async function handleSaveNewMedication() {
     const bearer = window.localStorage.getItem('JWT');
     const { token } = bearer ? JSON.parse(bearer) : ''
     if (isValidDates()) {
@@ -133,21 +134,56 @@ export function useMedicationsBloc() {
           })
         });
         if (response.ok) {
-          alert('Medicação criada com sucesso')
+          toast.success('Medicação criada com sucesso', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
           return router.push('/medications')
         } else if (response.status === 400) {
           console.error('Erro ao registrar nova medicação:', response);
-          return alert('Erro ao registrar nova medicação. Verifique se todos os campos estão devidamente preenchidos');
+          return toast.error('Erro ao registrar nova medicação. Verifique se todos os campos estão devidamente preenchidos', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
         } else {
           console.error('Erro ao registrar nova medicação:', response);
-          return alert('Erro ao registrar nova medicação');
+          return toast.error('Erro ao registrar nova medicação', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
         }
       } catch (error) {
         console.error('Erro ao acessar api', error);
-        return alert('Erro ao registrar nova medicação. Verifique se todos os campos estão devidamente preenchidos');
+        return toast.error('Erro ao registrar nova medicação. Verifique se todos os campos estão devidamente preenchidos', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     }
-    return alert('Expires date must be before issued date ');
+    return toast.error('Expires date must be before issued date', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
   }
 
   return {

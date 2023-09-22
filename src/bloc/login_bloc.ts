@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { apiUrl } from '../util/constants';
 import { LoginResponseData } from '../util/types';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 export function useLoginBloc() {
   const router = useRouter();
@@ -40,16 +41,37 @@ export function useLoginBloc() {
           router.push('/medications')
         } else {
           if (response.status === 400) {
-            alert('Login ou senha inválidos.')
+            toast.error('Login ou senha inválidos.', {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
           }
           console.error('Erro ao enviar o formulário:', data);
         }
       } catch (error) {
-        alert('Desculpe, parece que houve um erro ao realizar o login')
+        toast.error('Desculpe, parece que houve um erro ao realizar o login', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         console.error('Erro ao enviar o formulário', error);
       }
     } else {
-      alert('Campos obrigatórios não preenchidos')
+      toast.error('Campos obrigatórios não preenchidos', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       console.error('Campos obrigatórios não preenchidos');
     }
   };

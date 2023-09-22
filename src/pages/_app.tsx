@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Splash from '../components/splash_page';
 import { useGlobalBloc } from '../bloc/global_bloc';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "react-datepicker/dist/react-datepicker.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -29,7 +31,12 @@ function MyApp({ Component, pageProps }: AppProps) {
     return <Splash />;
   }
 
-  return <Component {...pageProps} />
+  return (
+    <>
+      <Component {...pageProps} />
+      <ToastContainer />
+    </>
+  )
 }
 
 export default MyApp
