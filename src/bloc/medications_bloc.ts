@@ -44,7 +44,6 @@ export function useMedicationsBloc() {
       if (response.ok) {
         const responseData = await response.json();
         setAllManufacturers(responseData.data)
-        console.log('manufacturers::', responseData);
       } else {
         console.error('Erro ao buscar manufacturers:', response);
       }
@@ -70,7 +69,6 @@ export function useMedicationsBloc() {
         setMedicationsList(responseData.data)
         setLastPage(responseData.last_page)
         setTotalMedications(responseData.total)
-        console.log('Medicações::', responseData);
       } else {
         console.error('Erro ao buscar medicações:', response);
       }
@@ -113,14 +111,11 @@ export function useMedicationsBloc() {
     setManufacturersByMedication([
       ...selectedManufacturers
     ])
-    console.log('manufacturersByMedication', manufacturersByMedication);
   }
 
   async function handleSaveNewMedication() {    
     const bearer = window.localStorage.getItem('JWT');
     const { token } = bearer ? JSON.parse(bearer) : ''
-    console.log('formData', {drugName, unitsPerPackage, formattedIssuedDate, formattedExpiresDate, manufacturersByMedication});
-    
     if (isValidDates()) {
       try {
         const response = await fetch(`${apiUrl}/medications`, {

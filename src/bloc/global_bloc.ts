@@ -18,7 +18,6 @@ export function useGlobalBloc() {
       });
       if (response.ok) {
         const data : ApiResponseData = await response.json();
-        console.log('token valido', data);
         return true;
       } else {
         console.error('Erro ao verificar token:', response);

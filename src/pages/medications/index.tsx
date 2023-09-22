@@ -24,7 +24,6 @@ const Medications = ({ }) => {
   }
 
   const handlePaginate = async ({ isFirstPage = false, isLastPage = false, page = 1 }: PaginationFunctionProps) => {
-    console.log('currentPage', currentPage);
     if (isFirstPage) {
       setCurrentPage(1)
       return getAllMedications({ page: 1 })

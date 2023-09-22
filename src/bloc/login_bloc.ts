@@ -36,7 +36,6 @@ export function useLoginBloc() {
         const data: LoginResponseData = await response.json()
 
         if (response.status === 200) {
-          console.log('Formulário enviado com sucesso!', data);
           localStorage.setItem('JWT', JSON.stringify(data));
           router.push('/medications')
         } else {
