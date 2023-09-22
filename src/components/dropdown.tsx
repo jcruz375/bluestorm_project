@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AiOutlineDown } from 'react-icons/ai';
 import Select from 'react-select';
 import { useMedicationsBloc } from '../bloc/medications_bloc';
@@ -16,12 +16,15 @@ interface SelectedOptions {
 export function Dropdown({ manufacturers }: DropDownProps) {
   const [selectedOptions, setSelectedOptions] = useState<SelectedOptions[]>([]);
 
-  const { updateField } = useMedicationsBloc();
+  const { manufacturersByMedication, handleChangeManufacturers} = useMedicationsBloc();
+
+  useEffect(() => {
+    let selectedManufacturers = selectedOptions.map(manufacturer => manufacturer.label)
+    handleChangeManufacturers(selectedManufacturers);
+  }, [selectedOptions]);
 
   const handleChange = (selected: any) => {
     setSelectedOptions(selected);
-    let selectedManufacturers = selectedOptions.map(manufacturer => manufacturer.label)
-    updateField('manufacturers', selectedManufacturers)
   };
 
   const dropdownOptions = manufacturers.map(manufacturer => ({
@@ -38,6 +41,7 @@ export function Dropdown({ manufacturers }: DropDownProps) {
           options={dropdownOptions as any}
           value={selectedOptions}
           onChange={handleChange}
+          
         />
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
           <AiOutlineDown />

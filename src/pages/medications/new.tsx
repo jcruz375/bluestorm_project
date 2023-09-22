@@ -4,14 +4,21 @@ import styles from '../../styles/new_medications_page.module.scss'
 import DatePicker from "react-datepicker";
 import { useMedicationsBloc } from '../../bloc/medications_bloc';
 import { Dropdown } from '../../components/dropdown';
+import { useRouter } from 'next/router';
 
 const NewMedicationPage = () => {
-  const { handleChangeDate, formData, issuedDate, expiresDate, handleSaveNewMedication, updateField, getAllManufacturers, allManufacturers } = useMedicationsBloc();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    updateField(name, value);
-  };
+  const { handleChangeDate,
+    getAllManufacturers,
+    allManufacturers,
+    drugName,
+    unitsPerPackage,
+    issuedDate,
+    expiresDate,
+    setDrugName,
+    setUnitsPerPackage,
+    handleSaveNewMedication,
+    } = useMedicationsBloc();
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchData() {
@@ -29,16 +36,16 @@ const NewMedicationPage = () => {
           label='Drug name'
           id="drug_name_input"
           name="drug_name"
-          value={formData.drug_name}
-          onChangeFunction={handleChange}
+          value={drugName}
+          onChangeFunction={(event : React.ChangeEvent<HTMLInputElement>) => { setDrugName(event.target.value)}}
           type="text"
         />
         <InputLabeled
           label='Units per package'
           id="units_per_package_input"
           name="units_per_package"
-          value={String(formData.units_per_package)}
-          onChangeFunction={handleChange}
+          value={String(unitsPerPackage)}
+          onChangeFunction={(event : React.ChangeEvent<HTMLInputElement>) => { setUnitsPerPackage(parseInt(event.target.value))}}
           type='number'
         />
         <article className={`flex flex-col justify-between items-stretch ${styles.datePicker_container}`}>
@@ -59,7 +66,7 @@ const NewMedicationPage = () => {
         </article>
         <article className={`flex flex-col justify-between items-stretch ${styles.select_container}`}>
           <label htmlFor="expires_on">Manufacturers</label>
-          <Dropdown manufacturers={allManufacturers}/>
+          <Dropdown manufacturers={allManufacturers} />
         </article>
         <button
           onClick={handleSaveNewMedication}
@@ -68,7 +75,13 @@ const NewMedicationPage = () => {
           Registrar
         </button>
         <div className="flex justify-center items-center wfull">
-          <span>Voltar</span>
+          <span
+            onClick={() => {
+              router.push('/medications')
+            }}
+          >
+            Voltar
+          </span>
         </div>
       </section>
     </main>

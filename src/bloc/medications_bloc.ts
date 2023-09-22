@@ -18,16 +18,14 @@ export function useMedicationsBloc() {
   const [medicationsList, setMedicationsList] = useState<MedicationsProps[]>([]);
   const [lastPage, setLastPage] = useState(0);
   const [totalMedications, setTotalMedications] = useState(0);
-  const [issuedDate, setIssueDate] = useState(new Date());
-  const [expiresDate, setExpiresDate] = useState(new Date());
   const [allManufacturers, setAllManufacturers] = useState<ManufacturerProps[]>([]);
-  const [formData, setFormData] = useState({
-    drug_name: "",
-    units_per_package: '0',
-    issued_on: "",
-    expires_on: "",
-    manufacturers: []
-  });
+  const [drugName, setDrugName] = useState('');
+  const [unitsPerPackage, setUnitsPerPackage] = useState(0);
+  const [issuedDate, setIssueDate] = useState(new Date());
+  const [formattedIssuedDate, setFormattedIssuedDate] = useState<string | Date>(new Date());
+  const [expiresDate, setExpiresDate] = useState(new Date());
+  const [formattedExpiresDate, setFormattedExpiresDate] = useState <string | Date>(new Date());
+  const [manufacturersByMedication, setManufacturersByMedication] = useState<string[]>([]);
 
   const router = useRouter();
 
@@ -81,14 +79,6 @@ export function useMedicationsBloc() {
     }
   }
 
-  const updateField = (fieldName: string, value: string | string[]) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [fieldName]: value,
-    }));
-    console.log('update', { fieldName, value, formData});
-  };
-
   function handleChangeDate({ isExpiresDate = false, date } : ChangeDateParamethers) {
     let oldDate = date
     
@@ -105,14 +95,11 @@ export function useMedicationsBloc() {
     
     const formatedDate = `${year}-${month}-${day}T${hour}:${minute}:${seconds}${offsetSinal}${offsetHoras}:00`;
     if (isExpiresDate) {
-      setExpiresDate(oldDate);
-      
-      updateField('expires_on', formatedDate);
-      return console.log('formData 01', formData);
+      setFormattedExpiresDate(formatedDate)
+      return setExpiresDate(oldDate);
     }
-    setIssueDate(oldDate);
-    updateField('issued_on', formatedDate);
-    console.log('formData', formData);
+    setFormattedIssuedDate(formatedDate)
+    return setIssueDate(oldDate);
   }
 
   function isValidDates() {
@@ -122,10 +109,17 @@ export function useMedicationsBloc() {
     return false;
   }
 
+  function handleChangeManufacturers(selectedManufacturers: string[]) {
+    setManufacturersByMedication([
+      ...selectedManufacturers
+    ])
+    console.log('manufacturersByMedication', manufacturersByMedication);
+  }
+
   async function handleSaveNewMedication() {    
     const bearer = window.localStorage.getItem('JWT');
     const { token } = bearer ? JSON.parse(bearer) : ''
-    console.log('formData', formData);
+    console.log('formData', {drugName, unitsPerPackage, formattedIssuedDate, formattedExpiresDate, manufacturersByMedication});
     
     if (isValidDates()) {
       try {
@@ -136,11 +130,11 @@ export function useMedicationsBloc() {
             'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify({
-            drug_name: formData.drug_name,
-            units_per_package: parseInt(formData.units_per_package),
-            issued_on: formData.issued_on,
-            expires_on: formData.expires_on,
-            manufacturers: formData.manufacturers
+            drug_name: drugName,
+            units_per_package: unitsPerPackage,
+            issued_on: formattedIssuedDate,
+            expires_on: formattedExpiresDate,
+            manufacturers: manufacturersByMedication
           })
         });
         if (response.ok) {
@@ -166,13 +160,17 @@ export function useMedicationsBloc() {
     medicationsList,
     lastPage,
     totalMedications,
-    formData,
-    handleChangeDate,
+    drugName,
+    unitsPerPackage,
     issuedDate,
     expiresDate,
-    handleSaveNewMedication,
-    updateField,
+    manufacturersByMedication,
+    setDrugName,
+    setUnitsPerPackage,
+    handleChangeDate,
+    handleChangeManufacturers,
     getAllManufacturers,
     allManufacturers,
+    handleSaveNewMedication,
   }
 }
